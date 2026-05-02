@@ -2,81 +2,121 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>KÁOSZ MODE</title>
+<title>REALITY.EXE CORRUPTED</title>
+
 <style>
-  body {
-    margin: 0;
-    font-family: Arial;
-    overflow: hidden;
-    transition: all 0.1s;
-  }
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial;
+  transition: transform 0.1s;
+}
 
-  #btn {
-    position: absolute;
-    padding: 20px;
-    font-size: 18px;
-    cursor: pointer;
-  }
+#hud {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
 
-  #text {
-    position: absolute;
-    top: 10px;
-    width: 100%;
-    text-align: center;
-    font-size: 22px;
-  }
+#world {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 </style>
 </head>
 
 <body>
 
-<div id="text">KÁOSZ AKTIVÁLVA</div>
-<button id="btn">NE NYOMD</button>
+<div id="hud">REALITY STATUS: unstable</div>
+<div id="world"></div>
 
 <script>
-const btn = document.getElementById("btn");
-const text = document.getElementById("text");
+const world = document.getElementById("world");
+const hud = document.getElementById("hud");
 
-let clicks = 0;
+let gravity = 1;
+let money = -9999999999;
 
-function rand(max){ return Math.random() * max; }
+// 👥 fake multiplayer
+const players = Array.from({length: 5}, (_, i) => ({
+  name: "User_" + Math.floor(Math.random()*9999),
+  x: Math.random()*window.innerWidth,
+  y: Math.random()*window.innerHeight
+}));
 
-function chaos() {
-  // háttér szín
+// 🌍 háttér káosz
+setInterval(() => {
   document.body.style.background =
-    `rgb(${rand(255)},${rand(255)},${rand(255)})`;
+    `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+}, 50);
 
-  // gomb ugrál
-  btn.style.left = rand(window.innerWidth - 100) + "px";
-  btn.style.top = rand(window.innerHeight - 100) + "px";
+// 🔄 gravitáció randomizálás
+setInterval(() => {
+  gravity = (Math.random() * 4) - 2;
+  hud.innerText = "GRAVITY: " + gravity.toFixed(2);
+}, 1000);
 
-  // szöveg random
-  const msgs = [
-    "MI TÖRTÉNIK?",
-    "EZ NEM NORMLÁIS",
-    "NE ÁLLJ LE",
-    "A RENDSZER FIGYEL",
-    "KÁOSZ SZINT: " + clicks
-  ];
+// 💸 pénz rendszer (értelmetlen)
+setInterval(() => {
+  money -= Math.floor(Math.random()*1000000);
+}, 800);
 
-  text.innerText = msgs[Math.floor(rand(msgs.length))];
+// 👥 “több játékos” mozgás
+setInterval(() => {
+  players.forEach(p => {
+    p.x += (Math.random()-0.5)*20*gravity;
+    p.y += (Math.random()-0.5)*20*gravity;
+  });
+}, 100);
 
-  // néha forgatás
-  document.body.style.transform =
-    `rotate(${rand(6)-3}deg)`;
+// 🧠 REALITY GLITCH ENGINE (200 “funkció”)
+const chaosFunctions = [];
+
+for (let i = 0; i < 200; i++) {
+  chaosFunctions.push(() => {
+
+    // random effekt
+    const r = Math.random();
+
+    if (r < 0.2) {
+      document.body.style.transform = `rotate(${Math.random()*360}deg)`;
+    }
+
+    if (r < 0.4) {
+      world.innerHTML = "REALITY CORRUPTION #" + i;
+    }
+
+    if (r < 0.6) {
+      hud.innerText = "SYSTEM ERROR " + Math.floor(Math.random()*9999);
+    }
+
+    if (r < 0.8) {
+      document.body.style.filter = `blur(${Math.random()*5}px)`;
+    }
+
+    if (r < 0.95) {
+      money -= Math.floor(Math.random()*10000000);
+    }
+
+  });
 }
 
-// kattintás
-btn.addEventListener("click", () => {
-  clicks++;
-  chaos();
+// ⚡ káosz loop (minden egyszerre fut)
+setInterval(() => {
+  chaosFunctions.forEach(fn => fn());
+}, 200);
 
-  // gomb gyorsul
-  btn.style.transition = "0.05s";
-});
+// 🚨 “valóság összeomlás” event
+setInterval(() => {
+  if (Math.random() > 0.85) {
+    alert("⚠ REALITY FAILURE DETECTED");
+  }
+}, 3000);
 
-// folyamatos káosz
-setInterval(chaos, 800);
 </script>
 
 </body>

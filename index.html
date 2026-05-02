@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>KÁOSZ ZÓNA</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Comic Sans MS, Arial;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-top: 20px;
+    }
+
+    #btn {
+      padding: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      position: absolute;
+      transition: 0.1s;
+    }
+
+    #counter {
+      font-size: 30px;
+      margin-top: 20px;
+    }
+
+    #message {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔥 KÁOSZ WEBOLDAL 🔥</h1>
+
+<button id="btn">NE NYOMD MEG</button>
+
+<div id="counter">Kattintás: 0</div>
+<div id="message">Semmi sem történik. Vagy mégis?</div>
+
+<script>
+let count = 0;
+const btn = document.getElementById("btn");
+const counter = document.getElementById("counter");
+const message = document.getElementById("message");
+
+// random szín
+function randomColor() {
+  return "#" + Math.floor(Math.random()*16777215).toString(16);
+}
+
+// gomb mozgás
+btn.addEventListener("mouseover", () => {
+  btn.style.left = Math.random() * window.innerWidth + "px";
+  btn.style.top = Math.random() * window.innerHeight + "px";
+});
+
+// kattintás
+btn.addEventListener("click", () => {
+  count++;
+  counter.innerText = "Kattintás: " + count;
+
+  // háttér random
+  document.body.style.background = randomColor();
+
+  // üzenetek
+  const messages = [
+    "Miért nyomod ezt?",
+    "Ez teljesen felesleges.",
+    "Oké, de mi értelme?",
+    "Most már ne állj le...",
+    "A számítógép ítélkezik feletted."
+  ];
+
+  message.innerText = messages[Math.floor(Math.random() * messages.length)];
+
+  // gomb még gyorsabban menekül
+  btn.style.left = Math.random() * window.innerWidth + "px";
+  btn.style.top = Math.random() * window.innerHeight + "px";
+
+  // néha ablak rázás (visual chaos)
+  if (Math.random() > 0.7) {
+    document.body.style.transform = "rotate(" + (Math.random()*6-3) + "deg)";
+  } else {
+    document.body.style.transform = "none";
+  }
+});
+
+// random háttér változás
+setInterval(() => {
+  document.body.style.background = randomColor();
+}, 3000);
+
+</script>
+
+</body>
+</html>
